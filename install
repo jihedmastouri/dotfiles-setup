@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sudo dnf upgrade -y --refresh
+sudo dnf update -y
+dnf groupinstall "Development tools"
+sudo dnf install -y git
+sudo dnf install -y ansible
+ansible-playbook local.yml

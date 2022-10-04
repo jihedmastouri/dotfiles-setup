@@ -1,0 +1,26 @@
+- name: Install ZSH
+  dnf:
+    name: zsh
+
+- name: Change shell to zsh
+  shell: chsh -s $(which zsh)
+  tags:
+    - install
+
+- name: Install ZSH
+  dnf:
+    name: starship
+
+- name: Install zsh-autosuggestions
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
+    dest: "~/.zsh/plugins/zsh-autosuggestions"
+  tags:
+    - install
+
+- name: Install zsh-syntax-highlighting
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
+    dest: "~/.zsh/plugins/zsh-autosuggestions"
+  tags:
+    - install

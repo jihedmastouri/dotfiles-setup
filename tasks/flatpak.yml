@@ -1,0 +1,31 @@
+- name: flatpak present
+  dnf:
+    name: flatpak
+    state: present
+
+- name: Add the flathub flatpak repository remote to the user installation
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+
+- name: install via flatpak
+  community.general.flatpak:
+    name:
+      [
+        "us.zoom.Zoom",
+        "com.obsproject.Studio",
+        "com.discordapp.Discord",
+        "com.getpostman.Postman",
+        "com.slack.Slack",
+        "com.spotify.Client",
+        "org.mozilla.Thunderbird",
+        "com.github.huluti.Curtail",
+        "fr.romainvigier.MetadataCleaner",
+        "com.valvesoftware.Steam",
+        "org.darktable.Darktable",
+        "org.gimp.GIMP",
+      ]
+    state: present
+    method: system
