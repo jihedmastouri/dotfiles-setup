@@ -20,12 +20,13 @@
         "com.getpostman.Postman",
         "com.slack.Slack",
         "com.spotify.Client",
-        "org.mozilla.Thunderbird",
         "com.github.huluti.Curtail",
         "fr.romainvigier.MetadataCleaner",
         "com.valvesoftware.Steam",
         "org.darktable.Darktable",
         "org.gimp.GIMP",
+        "org.gaphor.Gaphor",
+        "org.inkscape.Inkscape",
       ]
     state: present
     method: system

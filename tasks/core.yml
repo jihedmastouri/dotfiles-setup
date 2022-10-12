@@ -26,7 +26,17 @@
 - name: Install Programming Languages
   become: true
   dnf:
-    name: ["lua5.1", "golang", "rust", "@node", "gcc", "gawk"]
+    name: 
+      [
+      "lua5.1", 
+      "golang", 
+      "rust", 
+      "@node", 
+      "gcc", 
+      "gawk", 
+      "hugo", 
+      "sd"
+      ]
   tags:
     - install
     - core
@@ -55,6 +65,7 @@
         "vlc",
         "firefox",
         "screenkey",
+        "kitty",
       ]
   tags:
     - install
