@@ -1,26 +1,20 @@
 - name: Install ZSH
-  dnf:
+  package:
     name: zsh
+    status: present
 
-- name: Change shell to zsh
+- name: Change shell to ZSH
   shell: chsh -s $(which zsh)
-  tags:
-    - install
 
-- name: Install ZSH
-  dnf:
-    name: starship
+- name: Install Starship
+  shell: "curl -sS https://starship.rs/install.sh | sh"
 
 - name: Install zsh-autosuggestions
-  ansible.builtin.git:
+  git:
     repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
     dest: "~/.zsh/plugins/zsh-autosuggestions"
-  tags:
-    - install
 
 - name: Install zsh-syntax-highlighting
-  ansible.builtin.git:
+  git:
     repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
     dest: "~/.zsh/plugins/zsh-autosuggestions"
-  tags:
-    - install

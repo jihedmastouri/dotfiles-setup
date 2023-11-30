@@ -1,0 +1,25 @@
+- hosts: localhost
+  vars:
+    source_key: "./.ssh/id_rsa"
+    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+
+  pre_tasks:
+    - name: Update Dnf
+      become: true
+      dnf:
+        update_cache: true
+        state: latest
+      when: ansible_os_family == 'RedHat'
+
+    - name: Update Apt
+      become: true
+      apt:
+        update_cache: true
+        state: latest
+      when: ansible_os_family == 'Debian'
+
+  tasks:
+    - include: tasks/core.yaml
+    - include: tasks/zsh-setup.yaml
+    - include: tasks/nvim-setup.yaml
+    - include: tasks/dotfiles.yaml

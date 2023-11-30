@@ -1,0 +1,55 @@
+- name: nvidia drivers
+  become: true
+  dnf:
+    name:
+      - akmod-nvidia
+  tags:
+    - install
+    - RPM
+    - Nvidia
+
+- name: Install Packages
+  become: true
+  package:
+    - htop
+    - distrobox
+    - build-essential
+    - moreutils
+    - neofecth
+    - cmake
+    - libstdc++
+    - xclip
+    - wl-clipboard
+  tags:
+    - install
+    - Fedora
+    - core
+
+- name: Install Programming Languages
+  become: true
+  package:
+    name:
+      - lua5.1
+      - golang
+      - rust
+      - node
+      - gcc
+      - gawk
+      - sd
+    status: lastest
+  tags:
+    - install
+    - core
+
+- name: Install Graphic UI
+  become: true
+  dnf:
+    name:
+      - dconf-editor
+      - nvidia-settings
+      - vlc
+      - firefox
+      - lacritty
+  tags:
+    - install
+    - core
