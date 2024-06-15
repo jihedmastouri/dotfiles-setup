@@ -16,6 +16,22 @@
     - install
     - core
 
+- name: Install Programming Languages
+  become: true
+  package:
+    name:
+      - lua5.1
+      - golang
+      - rust
+      - node
+      - gcc
+      - gawk
+      - sd
+    status: lastest
+  tags:
+    - install
+    - core
+
 - name: Install Terminal UI
   become: true
   package:

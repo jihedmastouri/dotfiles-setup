@@ -1,6 +1,6 @@
 # Auto Setup
 
-*New Pc? No prob!* 
+*New Pc? No prob!*
 
 Using `ansible` and `docker` to spin up my linux work environment.
 

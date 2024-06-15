@@ -1,18 +1,20 @@
-- name: nvidia drivers
+- name: Nvidia Drivers and App
   become: true
   dnf:
     name:
       - akmod-nvidia
+      - nvidia-settings
   tags:
     - install
     - RPM
     - Nvidia
+  when: ansible_os_family == 'RedHat'
 
 - name: Install Packages
   become: true
   package:
     - htop
-    - distrobox
+    - toolbox
     - build-essential
     - moreutils
     - neofecth
@@ -24,32 +26,17 @@
     - install
     - Fedora
     - core
-
-- name: Install Programming Languages
-  become: true
-  package:
-    name:
-      - lua5.1
-      - golang
-      - rust
-      - node
-      - gcc
-      - gawk
-      - sd
-    status: lastest
-  tags:
-    - install
-    - core
+  when: ansible_os_family == 'RedHat'
 
 - name: Install Graphic UI
   become: true
   dnf:
     name:
       - dconf-editor
-      - nvidia-settings
-      - vlc
       - firefox
-      - lacritty
+      - gnome-console
+      - alacritty
   tags:
     - install
     - core
+  when: ansible_os_family == 'RedHat'
