@@ -1,0 +1,67 @@
+- name: Install packages on Fedora and Ubuntu
+  hosts: all
+  become: true
+
+  vars:
+    common_packages:
+      - htop
+      - moreutils
+      - neofetch
+      - cmake
+      - libstdc++
+      - xclip
+      - tmux
+      - lazygit
+      - git-delta
+      - bat
+      - golang
+      - rust
+      - nodejs
+      - gcc
+      - gawk
+      - sd
+      - wl-clipboard
+      - curl
+      - wget
+      - fzf
+      - fd-find
+      - ripgrep
+      - tldr
+      - vim
+
+  tasks:
+    - name: Update package manager cache
+      ansible.builtin.shell: |
+        {% if ansible_facts['os_family'] == 'Debian' %}
+        apt-get update -y
+        {% elif ansible_facts['os_family'] == 'RedHat' %}
+        dnf makecache -y
+        {% endif %}
+      args:
+        executable: /bin/bash
+
+    - name: Install packages on Debian-based systems
+      ansible.builtin.apt:
+        name: "{{ common_packages + ['build-essential', 'lua5.1'] }}"
+        state: present
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Install packages on RedHat-based systems
+      ansible.builtin.yum:
+        name: "{{ common_packages + ['toolbox', 'lua'] }}"
+        state: present
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: Post-install symlinks and tweaks for Debian-based systems
+      ansible.builtin.shell: |
+        ln -sf $(which batcat) /usr/local/bin/bat || true
+        ln -sf $(which fdfind) /usr/local/bin/fd || true
+      when: ansible_facts['os_family'] == 'Debian'
+      args:
+        executable: /bin/bash
+
+    - name: Ensure "toolbox" is available on Fedora
+      ansible.builtin.yum:
+        name: toolbox
+        state: present
+      when: ansible_facts['os_family'] == 'RedHat'
