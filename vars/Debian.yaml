@@ -1,0 +1,14 @@
+packages: []
+
+tools:
+  bat: bat-cat
+  delta: delta
+  fzf: fzf
+  eza: eza
+  fd: find-fd
+  rg: ripgrep
+  tealdeer: tealdeer
+
+aliases:
+  bat: bat-cat
+  fd: find-fd

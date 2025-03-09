@@ -1,0 +1,14 @@
+- name: Install and set ZSH
+  tags:
+    - install
+    - config
+    - core
+    - dev
+  block:
+    - name: install ZSH
+      package:
+        name: zsh
+        status: present
+
+    - name: Change shell to ZSH
+      shell: chsh -s $(which zsh)

@@ -1,0 +1,68 @@
+- name: Install Common Packages
+  become: true
+  package: {{ common_packages }}
+  tags:
+    - install
+    - core
+    - common
+    - dev
+
+- name: Install Os specific Packages
+  become: true
+  package: {{ packages }}
+  tags:
+    - install
+    - core
+    - specific
+    - dev
+
+- name: Install Tools
+  become: true
+  package: "{{ item }}"
+  loop: "{{ tools | values }}"
+  tags:
+    - install
+    - core
+    - tools
+    - dev
+
+- name: Install Neovim
+  become: true
+  block:
+    - name: Install Neovim on Ubuntu
+      apt:
+        name:
+          - software-properties-common
+          - neovim
+          - python-dev
+          - python-pip
+          - python3-dev
+          - python3-pip
+        update_cache: yes
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Add Neovim PPA on Ubuntu
+      apt_repository:
+        repo: ppa:neovim-ppa/stable
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Install Neovim on Fedora
+      dnf:
+        name:
+          - neovim
+          - python3-neovim
+        state: present
+      when: ansible_facts['os_family'] == 'RedHat'
+
+- name: Config Aliases
+  ansible.builtin.file:
+    src: "/usr/bin/{{ item }}"
+    dest: "/usr/local/bin/{{ aliases[item] }}"
+    state: link
+  when: item != item_list[item]
+  loop: "{{ aliases.keys() | list }}"
+  tags:
+    - config
+    - core
+    - alias
+    - dev

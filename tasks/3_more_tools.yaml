@@ -1,0 +1,24 @@
+- name: Install external tools
+  tags:
+    - intsall
+    - core
+    - external
+    - dev
+  block:
+    - name: Install via curl
+      ansible.builtin.shell: item
+      loop: "{{ extern_tools | values }}"
+      tags:
+        - go_install
+
+    - name: Install with Go
+      ansible.builtin.shell: go install {{ item }}
+      loop: "{{ go_installs | values }}"
+      tags:
+        - go_install
+
+    - name: Install with uvx
+      ansible.builtin.shell: uv tool install {{ item }}
+      loop: "{{ uv_installs | values }}"
+      tags:
+        - uv_install

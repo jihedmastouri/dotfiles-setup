@@ -1,0 +1,49 @@
+- hosts: localhost
+  vars_files:
+    - "vars/default.yaml"
+    - "vars/{{ ansible_facts['os_family'] | lower }}.yaml"
+
+  pre_tasks:
+    - name: Update DNF and install Development Tools (RedHat-based)
+      become: true
+      when: ansible_facts['os_family'] == 'RedHat'
+      block:
+        - name: Update DNF cache
+          ansible.builtin.dnf:
+            update_cache: true
+
+        - name: Upgrade all packages
+          ansible.builtin.dnf:
+            name: "*"
+            state: latest
+
+        - name: Add RPM Fusion
+          shell: |
+            - dnf config-manager --add-repo https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+            - dnf config-manager --add-repo https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+        - name: Install Development Tools group
+          ansible.builtin.dnf:
+            name: "@Development tools"
+            state: present
+
+    - name: Update APT cache and upgrade packages (Debian-based)
+      become: true
+      when: ansible_facts['os_family'] == 'Debian'
+      block:
+        - name: Update APT cache
+          ansible.builtin.apt:
+            update_cache: true
+
+        - name: Upgrade all packages
+          ansible.builtin.apt:
+            upgrade: dist
+
+  tasks:
+    - inclue: ./tasks/1_core.yaml
+    - inclue: ./tasks/2_langs.yaml
+    - inclue: ./tasks/3_more_tools.yaml
+    - inclue: ./tasks/4_dotfile.yaml
+    - inclue: ./tasks/5_app.yaml
+    - inclue: ./tasks/6_flatpak.yaml
+

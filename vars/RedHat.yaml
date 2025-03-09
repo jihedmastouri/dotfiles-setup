@@ -1,0 +1,12 @@
+packages: []
+
+tools:
+  bat: bat
+  delta: git-delta
+  fzf: fzf
+  eza: eza
+  fd: fd
+  rg: ripgrep
+  tealdeer: tealdeer
+
+aliases:

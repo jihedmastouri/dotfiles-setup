@@ -1,0 +1,55 @@
+- name: Install Node.js (fnm)
+  shell: curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
+  tags:
+    - install
+    - langs
+    - dev
+
+- name: Install Go
+  tags:
+    - install
+    - langs
+    - dev
+  block:
+    - name: Remove existing Go installation
+      file:
+        path: /usr/local/go
+        state: absent
+
+    - name: Download Go tarball
+      ansible.builtin.get_url:
+        url: "https://go.dev/dl/go{{ goversion }}.linux-amd64.tar.gz"
+        dest: "/tmp/go{{ goversion }}.linux-amd64.tar.gz"
+        mode: '0644'
+
+    - name: Extract Go archive
+      ansible.builtin.unarchive:
+        src: "/tmp/go{{ goversion }}.linux-amd64.tar.gz"
+        dest: /usr/local
+        remote_src: yes
+
+- name: Install Rust
+  tags:
+    - install
+    - langs
+    - dev
+  block:
+    - name: Check if Rust is already installed
+      command: rustc --version
+      register: rust_installed
+      ignore_errors: true
+      changed_when: false
+
+    - name: Download and install Rust using rustup
+      shell: |
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      args:
+        creates: ~/.cargo/bin/rustc
+      when: rust_installed.rc != 0
+
+- name: Install Python (uv)
+  shell: curl -LsSf https://astral.sh/uv/install.sh | sh
+  tags:
+    - install
+    - langs
+    - dev

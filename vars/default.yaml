@@ -1,0 +1,25 @@
+common_packages:
+  - tmux
+  - git
+  - curl
+  - wget
+  - vim
+  - ranger
+
+goversion: 1.24
+
+more_tools:
+  - curl -sS https://starship.rs/install.sh | sh
+  - curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+
+go_install:
+  - github.com/jesseduffield/lazygit@latest
+  - github.com/charmbracelet/glow@latest
+  - github.com/derailed/k9s@latest
+  - github.com/kubernetes/kompose@latest
+  - github.com/jesseduffield/lazydocker@latest
+
+uv_install:
+  - ruff
+  - glances
+  - posting
