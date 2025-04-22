@@ -10,5 +10,5 @@ tools:
   tealdeer: tealdeer
 
 aliases:
-  "/usr/bin/bat": "/usr/bin/bat-cat"
-  "/usr/bin/fd": "/usr/bin/find-fd"
+  "$HOME/bin/bat": "/usr/bin/bat-cat"
+  "$HOME/bin/fd": "/usr/bin/find-fd"

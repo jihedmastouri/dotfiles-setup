@@ -29,7 +29,12 @@
 - name: Install Neovim
   become: true
   block:
-    - name: Install Neovim on Ubuntu
+    - name: Add Neovim PPA on Ubuntu
+      apt_repository:
+        repo: ppa:neovim-ppa/stable
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Install Neovim and dependencies on Debian
       apt:
         name:
           - software-properties-common
@@ -39,11 +44,6 @@
           - python3-dev
           - python3-pip
         update_cache: yes
-      when: ansible_facts['os_family'] == 'Debian'
-
-    - name: Add Neovim PPA on Ubuntu
-      apt_repository:
-        repo: ppa:neovim-ppa/stable
       when: ansible_facts['os_family'] == 'Debian'
 
     - name: Install Neovim on Fedora
@@ -56,8 +56,8 @@
 
 - name: Config Aliases
   ansible.builtin.file:
-    src: "/usr/bin/{{ item }}"
-    dest: "/usr/local/bin/{{ aliases[item] }}"
+    src: "{{ item }}"
+    dest: "{{ aliases[item] }}"
     state: link
   when: item != item_list[item]
   loop: "{{ aliases.keys() | list }}"
