@@ -5,6 +5,8 @@ common_packages:
   - wget
   - vim
   - ranger
+  - gpg
+  - snapd
 
 goversion: 1.24
 

@@ -1,12 +1,12 @@
 - hosts: localhost
   vars_files:
     - "vars/default.yaml"
-    - "vars/{{ ansible_facts['os_family'] | lower }}.yaml"
+    - "vars/{{ ansible_distribution | lower }}.yaml"
 
   pre_tasks:
-    - name: Update DNF and install Development Tools (RedHat-based)
+    - name: Update DNF and install Development Tools (Fedora)
       become: true
-      when: ansible_facts['os_family'] == 'RedHat'
+      when: ansible_distribution == 'Fedora'
       block:
         - name: Update DNF cache
           ansible.builtin.dnf:
@@ -27,9 +27,9 @@
             name: "@Development tools"
             state: present
 
-    - name: Update APT cache and upgrade packages (Debian-based)
+    - name: Update APT cache and upgrade packages (Ubuntu)
       become: true
-      when: ansible_facts['os_family'] == 'Debian'
+      when: ansible_distribution == 'Ubuntu'
       block:
         - name: Update APT cache
           ansible.builtin.apt:
@@ -46,4 +46,3 @@
     - include: ./tasks/4_dotfile.yaml
     - include: ./tasks/5_app.yaml
     - include: ./tasks/6_flatpak.yaml
-

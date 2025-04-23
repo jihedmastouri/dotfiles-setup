@@ -1,4 +1,6 @@
-packages: []
+packages: 
+  - dnf-plugins-core # For COPR and config-manager
+  - liberation-fonts # Often needed for Chrome
 
 tools:
   bat: bat

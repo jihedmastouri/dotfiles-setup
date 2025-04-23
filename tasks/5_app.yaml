@@ -1,1 +1,109 @@
-# chrome, vscode, ghostty
+- name: Install Google Chrome
+  become: yes
+  block:
+    - name: Add Google Chrome signing key (Ubuntu)
+      ansible.builtin.get_url:
+        url: https://dl.google.com/linux/linux_signing_key.pub
+        dest: /etc/apt/keyrings/google-chrome.gpg
+        mode: '0644'
+        force: true
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Add Google Chrome repository (Ubuntu)
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main"
+        state: present
+        filename: google-chrome
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Install Google Chrome (Ubuntu)
+      ansible.builtin.apt:
+        name: google-chrome-stable
+        state: present
+        update_cache: yes
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Download Google Chrome RPM (Fedora)
+      ansible.builtin.get_url:
+        url: https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+        dest: /tmp/google-chrome-stable_current_x86_64.rpm
+        mode: '0644'
+      when: ansible_distribution == 'Fedora'
+
+    - name: Install Google Chrome RPM which also adds repo (Fedora)
+      ansible.builtin.dnf:
+        name: /tmp/google-chrome-stable_current_x86_64.rpm
+        state: present
+        disable_gpg_check: true # The RPM itself isn't signed in a way DNF checks by default, but the repo it adds is.
+      when: ansible_distribution == 'Fedora'
+      notify: Clean up Chrome RPM # Add a handler later if needed
+
+- name: Install Visual Studio Code
+  become: yes
+  block:
+    - name: Add Microsoft GPG key (Ubuntu)
+      ansible.builtin.get_url:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        dest: /etc/apt/keyrings/packages.microsoft.gpg
+        mode: '0644'
+        force: true
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Add Microsoft VS Code repository (Ubuntu)
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+        state: present
+        filename: vscode
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Install Visual Studio Code (Ubuntu)
+      ansible.builtin.apt:
+        name: code
+        state: present
+        update_cache: yes
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Add Microsoft GPG key (Fedora)
+      ansible.builtin.rpm_key:
+        state: present
+        key: https://packages.microsoft.com/keys/microsoft.asc
+      when: ansible_distribution == 'Fedora'
+
+    - name: Add Microsoft VS Code repository (Fedora)
+      ansible.builtin.yum_repository:
+        name: code
+        description: Visual Studio Code
+        baseurl: https://packages.microsoft.com/yumrepos/vscode
+        enabled: true
+        gpgcheck: true
+        gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+      when: ansible_distribution == 'Fedora'
+
+    - name: Install Visual Studio Code (Fedora)
+      ansible.builtin.dnf:
+        name: code
+        state: present
+      when: ansible_distribution == 'Fedora'
+
+- name: Install Ghostty
+  become: yes
+  block:
+    - name: Install Ghostty via Snap (Ubuntu)
+      community.general.snap:
+        name: ghostty
+        classic: yes
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Enable Ghostty COPR repository (Fedora)
+      ansible.builtin.command: dnf copr enable -y pgdev/ghostty
+      args:
+        creates: /etc/yum.repos.d/_copr_pgdev-ghostty.repo
+      when: ansible_distribution == 'Fedora'
+      changed_when: true # Assume command always makes a change if it runs
+
+    - name: Install Ghostty (Fedora)
+      ansible.builtin.dnf:
+        name: ghostty
+        state: present
+      when: ansible_distribution == 'Fedora'
