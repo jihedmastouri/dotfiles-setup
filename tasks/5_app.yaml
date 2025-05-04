@@ -1,5 +1,5 @@
 - name: Install Google Chrome
-  become: yes
+  become: true
   block:
     - name: Add Google Chrome signing key (Ubuntu)
       ansible.builtin.get_url:
@@ -39,7 +39,7 @@
       notify: Clean up Chrome RPM # Add a handler later if needed
 
 - name: Install Visual Studio Code
-  become: yes
+  become: true
   block:
     - name: Add Microsoft GPG key (Ubuntu)
       ansible.builtin.get_url:
@@ -86,7 +86,7 @@
       when: ansible_distribution == 'Fedora'
 
 - name: Install Ghostty
-  become: yes
+  become: true
   block:
     - name: Install Ghostty via Snap (Ubuntu)
       community.general.snap:

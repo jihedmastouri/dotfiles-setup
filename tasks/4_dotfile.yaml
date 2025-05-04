@@ -6,9 +6,9 @@
     - dev
   block:
     - name: install ZSH
-      package:
-        name: zsh
-        status: present
+      package: zsh
+      become: true
 
     - name: Change shell to ZSH
       shell: chsh -s $(which zsh)
+

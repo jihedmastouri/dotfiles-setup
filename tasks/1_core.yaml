@@ -1,6 +1,7 @@
 - name: Install Common Packages
   become: true
-  package: {{ common_packages }}
+  package: "{{ item }}"
+  loop: "{{ common_packages }}"
   tags:
     - install
     - core
@@ -9,7 +10,8 @@
 
 - name: Install Os specific Packages
   become: true
-  package: {{ packages }}
+  package: "{{ item }}"
+  loop: "{{ packages }}"
   tags:
     - install
     - core
@@ -19,28 +21,26 @@
 - name: Install Tools
   become: true
   package: "{{ item }}"
-  loop: "{{ tools | values }}"
+  loop: "{{ tools.values() }}"
   tags:
     - install
     - core
     - tools
     - dev
 
-- name: Config Aliases
-  ansible.builtin.file:
-    src: "{{ item }}"
-    dest: "{{ aliases[item] }}"
-    state: link
-  when: item != item_list[item]
-  loop: "{{ aliases.keys() | list }}"
-  tags:
-    - config
-    - core
-    - alias
-    - dev
+#- name: Config Aliases
+#  ansible.builtin.file:
+#    src: "{{ item }}"
+#    dest: "{{ aliases[item] }}"
+#    state: link
+#  loop: "{{ aliases.keys() | list }}"
+#  tags:
+#    - config
+#    - core
+#    - alias
+#    - dev
 
 - name: Install Neovim
-  become: true
   block:
     - name: Add Neovim PPA on Ubuntu
       apt_repository:
@@ -48,21 +48,21 @@
       when: ansible_distribution == 'Ubuntu'
 
     - name: Install Neovim and dependencies on Ubuntu
-      apt:
-        name:
-          - software-properties-common
-          - neovim
-          - python-dev
-          - python-pip
-          - python3-dev
-          - python3-pip
-        update_cache: yes
+      become: true
+      package: "{{ item }}"
+      loop:
+        - software-properties-common
+        - neovim
+        - python-dev
+        - python-pip
+        - python3-dev
+        - python3-pip
       when: ansible_distribution == 'Ubuntu'
 
     - name: Install Neovim on Fedora
-      dnf:
-        name:
-          - neovim
-          - python3-neovim
-        state: present
+      become: true
+      package: "{{ item }}"
+      loop:
+        - neovim
+        - python3-neovim
       when: ansible_distribution == 'Fedora'

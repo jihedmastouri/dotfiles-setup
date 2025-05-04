@@ -40,9 +40,9 @@
             upgrade: dist
 
   tasks:
-    - include: ./tasks/1_core.yaml
-    - include: ./tasks/2_langs.yaml
-    - include: ./tasks/3_more_tools.yaml
-    - include: ./tasks/4_dotfile.yaml
-    - include: ./tasks/5_app.yaml
-    - include: ./tasks/6_flatpak.yaml
+    - import_tasks: ./tasks/1_core.yaml
+    - import_tasks: ./tasks/2_langs.yaml
+    - import_tasks: ./tasks/3_more_tools.yaml
+    - import_tasks: ./tasks/4_dotfile.yaml
+    - import_tasks: ./tasks/5_app.yaml
+    - import_tasks: ./tasks/6_flatpak.yaml

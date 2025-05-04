@@ -1,4 +1,3 @@
----
 flatpaks:
   essential:
     - com.github.jeromerobert.pdfarranger

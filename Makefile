@@ -18,6 +18,9 @@ install-docker-fedora:
 	@sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 	@sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 	@sudo systemctl enable --now docker
+	@sudo groupadd docker
+	@sudo usermod -aG docker $USER
+	@newgrp docker
 
 PHONY: install-docker-ubuntu
 install-docker-ubuntu:
@@ -36,6 +39,7 @@ install-docker-ubuntu:
 
 PHONY: build
 build:
+	@chmod +x ./run.sh
 	@docker build -t ansible-docker .
 
 PHONY: run

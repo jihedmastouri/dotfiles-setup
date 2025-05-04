@@ -3,7 +3,7 @@ FROM ubuntu:focal AS base
 WORKDIR /usr/local/bin
 
 # prevent apt from asking for input
-ENV DEBIAN_FRONTEND=noninteractive 
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -14,14 +14,8 @@ RUN apt-get update && \
     apt-get clean autoclean && \
     apt-get autoremove --yes
 
-FROM base AS ansible
+# TODO: check user and permission stuff between docker and ansible
 
-ARG TAGS
-RUN addgroup --gid 1000 normaluser
-RUN adduser --gecos normaluser --uid 1000 --gid 1000 --disabled-password normaluser
-USER normaluser
-WORKDIR /home/normaluser
-
-FROM ansible
+FROM base
 COPY . .
-CMD ["sh", "-c", "ansible-playbook ${TAGS:+--tags $TAGS} playbook.yaml"]
+CMD ["./run.sh"]

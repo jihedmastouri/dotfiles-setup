@@ -7,18 +7,19 @@
   block:
     - name: Install via curl
       ansible.builtin.shell: item
-      loop: "{{ extern_tools | values }}"
+      loop: "{{ more_tools}}"
       tags:
         - go_install
 
     - name: Install with Go
       ansible.builtin.shell: go install {{ item }}
-      loop: "{{ go_installs | values }}"
+      loop: "{{ go_installs }}"
       tags:
         - go_install
 
     - name: Install with uvx
       ansible.builtin.shell: uv tool install {{ item }}
-      loop: "{{ uv_installs | values }}"
+      loop: "{{ uv_installs }}"
       tags:
         - uv_install
+
