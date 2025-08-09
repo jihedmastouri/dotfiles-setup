@@ -1,12 +1,12 @@
 packages:
   - dnf-plugins-core # For COPR and config-manager
   - liberation-fonts # Often needed for Chrome
+  - "@Development Tools"
 
 tools:
   bat: bat
   delta: git-delta
   fzf: fzf
-  eza: eza
   fd: fd-find
   rg: ripgrep
   tealdeer: tealdeer

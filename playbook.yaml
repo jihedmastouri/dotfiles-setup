@@ -1,4 +1,5 @@
-- hosts: localhost
+- name: setup new machine
+  hosts: all
   vars_files:
     - "vars/default.yaml"
     - "vars/{{ ansible_distribution | lower }}.yaml"
@@ -17,14 +18,25 @@
             name: "*"
             state: latest
 
-        - name: Add RPM Fusion
-          shell: |
-            dnf config-manager --add-repo https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-            dnf config-manager --add-repo https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+        - name: Install RPM Fusion free repository
+          ansible.builtin.dnf:
+            name: https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_version }}.noarch.rpm
+            state: present
+
+        - name: Install RPM Fusion non-free repository
+          ansible.builtin.dnf:
+            name: https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_version }}.noarch.rpm
+            state: present
+
+        # - name: Install RPM Fusion repos
+        #   community.general.dnf_config_manager:
+        #     name: []
+        #     state: enabled
 
         - name: Install Development Tools group
           ansible.builtin.dnf:
-            name: "@Development tools"
+            skip_broken: true
+            name: "@development-tools"
             state: present
 
     - name: Update APT cache and upgrade packages (Ubuntu)
@@ -43,6 +55,6 @@
     - import_tasks: ./tasks/1_core.yaml
     - import_tasks: ./tasks/2_langs.yaml
     - import_tasks: ./tasks/3_more_tools.yaml
-    - import_tasks: ./tasks/4_dotfile.yaml
-    - import_tasks: ./tasks/5_app.yaml
+    # - import_tasks: ./tasks/4_dotfile.yaml
+    # - import_tasks: ./tasks/5_app.yaml
     - import_tasks: ./tasks/6_flatpak.yaml

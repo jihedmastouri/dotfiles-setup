@@ -1,6 +1,8 @@
 - name: Install Common Packages
   become: true
-  package: "{{ item }}"
+  package:
+    name: "{{ item }}"
+    state: present
   loop: "{{ common_packages }}"
   tags:
     - install
@@ -8,9 +10,11 @@
     - common
     - dev
 
-- name: Install Os specific Packages
+- name: Install OS specific Packages
   become: true
-  package: "{{ item }}"
+  package:
+    name: "{{ item }}"
+    state: present
   loop: "{{ packages }}"
   tags:
     - install
@@ -20,7 +24,9 @@
 
 - name: Install Tools
   become: true
-  package: "{{ item }}"
+  package:
+    name: "{{ item }}"
+    state: present
   loop: "{{ tools.values() }}"
   tags:
     - install
@@ -28,17 +34,17 @@
     - tools
     - dev
 
-#- name: Config Aliases
-#  ansible.builtin.file:
-#    src: "{{ item }}"
-#    dest: "{{ aliases[item] }}"
-#    state: link
-#  loop: "{{ aliases.keys() | list }}"
-#  tags:
-#    - config
-#    - core
-#    - alias
-#    - dev
+- name: Config Aliases
+  ansible.builtin.file:
+    src: "{{ item.source }}"
+    dest: "{{ item.dest }}"
+    state: link
+  loop: "{{ aliases }}"
+  tags:
+    - config
+    - core
+    - alias
+    - dev
 
 - name: Install Neovim
   block:
@@ -49,7 +55,9 @@
 
     - name: Install Neovim and dependencies on Ubuntu
       become: true
-      package: "{{ item }}"
+      package:
+        name: "{{ item }}"
+        state: present
       loop:
         - software-properties-common
         - neovim
@@ -61,7 +69,9 @@
 
     - name: Install Neovim on Fedora
       become: true
-      package: "{{ item }}"
+      package:
+        name: "{{ item }}"
+        state: present
       loop:
         - neovim
         - python3-neovim

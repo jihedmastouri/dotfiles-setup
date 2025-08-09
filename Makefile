@@ -39,12 +39,16 @@ install-docker-ubuntu:
 
 PHONY: build
 build:
-	@chmod +x ./run.sh
 	@docker build -t ansible-docker .
 
 PHONY: run
 run:
+	@ if [ $(grep -f ~/.ssh/id_ed25519.pub ~/.ssh/authorized_keys) ]; then cat ~/.ssh/id_ed25519.pub >> ~/.ssh/authorized_keys; fi
 	@docker run -it --rm \
-  		--privileged \
-  		-e TAGS="$(TAGS)" \
-  		ansible-docker
+		--network=host \
+		-v ~/.ssh/id_ed25519:/root/.ssh/id_ed25519:ro \
+		-v $(shell pwd):/ansible \
+		-e TAGS="$(TAGS)" \
+		ansible-docker \
+		ansible-playbook ${TAGS:+--tags $(TAGS)} -i ./invenotry.ini ./playbook.yaml -K
+

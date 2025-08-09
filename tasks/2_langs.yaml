@@ -1,13 +1,25 @@
-#- name: Install Node.js (fnm)
-#  shell: |
-#    export PATH=$PATH:/usr/bin  # Ensure the correct path is included
-#    curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
-#  tags:
-#    - install
-#    - langs
-#    - dev
+- name: Install Node.js (fnm)
+  block:
+    - name: Install dependencies
+      become: true
+      package:
+        name: [curl, unzip]
+        state: present
+
+    - name: Install fnm
+      shell: |
+        curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
+      args:
+        executable: /bin/bash
+      environment:
+        PATH: "{{ ansible_env.PATH }}:/usr/bin"
+  tags:
+    - install
+    - langs
+    - dev
 
 - name: Install Go
+  become: true
   tags:
     - install
     - langs
@@ -46,13 +58,29 @@
       shell: |
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       args:
-        creates: ~/.cargo/bin/rustc
+        creates: "{{ ansible_env.HOME }}/.cargo/bin/rustc"
+        executable: /bin/bash
+      environment:
+        PATH: "{{ ansible_env.PATH }}"
       when: rust_installed.rc != 0
 
 - name: Install Python (uv)
-  shell: curl -LsSf https://astral.sh/uv/install.sh | sh
+  block:
+    - name: Install dependencies
+      become: true
+      package:
+        name: [curl, python3, python3-pip]
+        state: present
+
+    - name: Install uv
+      shell: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+      args:
+        creates: "{{ ansible_env.HOME }}/.cargo/bin/uv"  # Or wherever uv gets installed
+        executable: /bin/bash
+      environment:
+        PATH: "{{ ansible_env.PATH }}"
   tags:
     - install
     - langs
     - dev
-

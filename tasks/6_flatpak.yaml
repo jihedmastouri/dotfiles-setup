@@ -1,4 +1,5 @@
 - name: flatpak present
+  become: true
   package:
     name: flatpak
     state: present

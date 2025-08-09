@@ -1,15 +1,17 @@
 packages:
   - apt-transport-https
+  - build-essential
 
 tools:
   bat: bat-cat
   delta: delta
   fzf: fzf
-  eza: eza
   fd: find-fd
   rg: ripgrep
   tealdeer: tealdeer
 
 aliases:
-  "$HOME/bin/bat": "/usr/bin/bat-cat"
-  "$HOME/bin/fd": "/usr/bin/find-fd"
+  - source: "$HOME/bin/bat"
+    dest: "/usr/bin/bat-cat"
+  - source: "$HOME/bin/fd"
+    dest: "/usr/bin/find-fd"

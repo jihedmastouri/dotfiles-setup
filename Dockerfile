@@ -1,4 +1,4 @@
-FROM ubuntu:focal AS base
+FROM ubuntu:noble AS base
 
 WORKDIR /usr/local/bin
 
@@ -7,15 +7,18 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y software-properties-common curl git build-essential && \
+    apt-get install -y software-properties-common curl git build-essential ca-certificates && \
+	update-ca-certificates && \
     apt-add-repository -y ppa:ansible/ansible && \
     apt-get update && \
-    apt-get install -y curl git ansible build-essential && \
+    apt-get install -y ansible && \
     apt-get clean autoclean && \
-    apt-get autoremove --yes
+    apt-get autoremove --yes && \
+	ansible-galaxy collection install community.general
 
 # TODO: check user and permission stuff between docker and ansible
 
 FROM base
 COPY . .
-CMD ["./run.sh"]
+RUN ansible-playbook ./playbook.yaml --check
+CMD [""]

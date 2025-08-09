@@ -11,6 +11,7 @@ flatpaks:
     - org.onlyoffice.desktopeditors
     - org.videolan.VLC
   creative:
+    - com.github.PintaProject.Pinta
     - com.belmoussaoui.Decoder
     - com.github.huluti.Curtail
     - com.obsproject.Studio

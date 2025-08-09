@@ -10,3 +10,8 @@ Ansible tags:
 - `gui`: other linux GUI apps.
 
 > check out my dotfiles' [repo](https://github.com/jihedmastouri/dotfiles) (aka configs).
+
+
+```sh
+make build && make run
+```

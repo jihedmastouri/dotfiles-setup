@@ -1,14 +1,40 @@
 - name: Install and set ZSH
+  become: true
+  block:
+    - name: install ZSH
+      package:
+        name: zsh
+        state: present
+
+    - name: Change shell to ZSH
+      shell: chsh -s $(which zsh)
   tags:
     - install
     - config
     - core
     - dev
-  block:
-    - name: install ZSH
-      package: zsh
-      become: true
 
-    - name: Change shell to ZSH
-      shell: chsh -s $(which zsh)
+- name: Download and configure Dotfiles
+  block:
+    - name: Make sure stow installed
+      package:
+        name: stow
+        state: present
+
+    - name: Download jihedmastouri/dotfiles
+      ansible.builtin.git:
+        repo: https://github.com/jihedmastouri/dotfiles.git
+        dest: "{{ ansible_env.HOME }}/.dotfiles"
+        update: no
+
+    - name: Apply symlinks
+      ansible.builtin.shell: |
+        cd "{{ ansible_env.HOME }}/.dotfiles"
+        chmod +x ./stow.sh && ./stow.sh -a
+
+  tags:
+    - install
+    - config
+    - core
+    - dev
 
