@@ -7,24 +7,31 @@ common_packages:
   - ranger
   - gpg
   - snapd
+  - btop
 
 goversion: 1.24.6
 
 more_tools:
-  - "https://starship.rs/install.sh | sh -s -- -b ~/.local/bin"
+  - "curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir ~/.local/bin"
   - "curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh"
 
 go_install:
-  - github.com/jesseduffield/lazygit@latest
-  - github.com/charmbracelet/glow@latest
-  - github.com/derailed/k9s@latest
-  - github.com/kubernetes/kompose@latest
   - github.com/jesseduffield/lazydocker@latest
+  - github.com/jesseduffield/lazygit@latest
+  - github.com/go-delve/delve/cmd/dlv@latest
+  - honnef.co/go/tools/cmd/staticcheck@latest
+  # personal:
+  - github.com/direnv/direnv@latest
+  - github.com/charmbracelet/glow@latest
+  - github.com/danielgatis/imgcat@latest
+  - github.com/charmbracelet/vhs@latest
+  # optional:
+  - github.com/charmbracelet/gum@latest
+  - github.com/kubernetes/kompose@latest
+  - github.com/derailed/k9s@latest
+  - github.com/rakyll/hey@latest
 
 cargo_install:
   - eza
 
-uv_install:
-  - ruff
-  - glances
-  - posting
+uv_install: []

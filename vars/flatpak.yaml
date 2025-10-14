@@ -1,49 +1,53 @@
 flatpaks:
   essential:
-    - com.github.jeromerobert.pdfarranger
-    - com.github.tchx84.Flatseal
-    - com.mattjakeman.ExtensionManager
-    - com.spotify.Client
-    - de.haeckerfelix.Fragments
-    - com.valvesoftware.Steam
-    - org.gnome.Decibels
-    - org.mozilla.Thunderbird
-    - org.onlyoffice.desktopeditors
-    - org.videolan.VLC
+    - com.github.jeromerobert.pdfarranger # PDF document rearranger
+    - com.github.tchx84.Flatseal # Flatpak permissions manager
+    - com.mattjakeman.ExtensionManager # GNOME Shell extension manager
+    - com.spotify.Client # Music streaming client
+    - de.haeckerfelix.Fragments # BitTorrent client
+    - com.valvesoftware.Steam # Video game digital distribution platform
+    - org.gnome.Decibels # Audio player
+    - org.mozilla.Thunderbird # Email client
+    - org.onlyoffice.desktopeditors # Office suite
+    - org.videolan.VLC # Media player
+    - com.github.johnfactotum.Foliate # E-book reader
+    - io.github.kolunmi.Bazaar # flatpak app store
   creative:
-    - com.github.PintaProject.Pinta
-    - com.belmoussaoui.Decoder
-    - com.github.huluti.Curtail
-    - com.obsproject.Studio
-    - fr.romainvigier.MetadataCleaner
-    - io.gitlab.adhami3310.Converter
-    - org.audacityteam.Audacity
-    - org.darktable.Darktable
-    - org.gimp.GIMP
-    - org.gnome.gitlab.YaLTeR.VideoTrimmer
-    - org.inkscape.Inkscape
-    - org.kde.krita
+    - com.belmoussaoui.Decoder # QR code and barcode scanner
+    - com.github.huluti.Curtail # Image compression tool
+    - com.obsproject.Studio # Live streaming and recording software
+    - fr.romainvigier.MetadataCleaner # Metadata removal tool
+    - io.gitlab.adhami3310.Converter # Media file converter
+    - org.audacityteam.Audacity # Audio editing software
+    - org.darktable.Darktable # Photo editing
+    - com.github.PintaProject.Pinta # Simple image editing
+    - org.gimp.GIMP # Advanced image editing
+    - org.gnome.gitlab.YaLTeR.VideoTrimmer # Simple video editing
+    - org.inkscape.Inkscape # Vectorial editing
+    - org.kde.krita # Drawing application
   dev:
-    - com.getpostman.Postman
-    - com.usebruno.Bruno
-    - com.visualstudio.code
-    - io.beekeeperstudio.Studio
-    - io.gitlab.liferooter.TextPieces
+    - com.getpostman.Postman # API development environment
+    - com.usebruno.Bruno # API client
+    - com.visualstudio.code # Code editor
+    - io.beekeeperstudio.Studio # Database management tool
+    - io.gitlab.liferooter.TextPieces # Text and code snippet manager
+    - app.freelens.Freelens # lens (k8s IDE)
   gnome_dev:
-    - app.drey.Elastic
-    - org.gnome.Builder
-    - re.sonny.Workbench
+    - app.drey.Elastic # GNOME Shell extension manager
+    - org.gnome.Builder # Integrated development environment
+    - re.sonny.Workbench # Developer sandbox
   misc:
-    - com.belmoussaoui.Obfuscate
-    - com.github.alexhuntley.Plots
-    - com.github.tenderowl.frog
-    - io.github.alainm23.planify
-    - info.febvre.Komikku
-    - io.github.amit9838.mousam
-    - io.github.mpobaschnig.Vaults
-    - io.github.vikdevelop.SaveDesktop
-    - org.bleachbit.BleachBit
-    - org.gnome.gitlab.YaLTeR.Identity
-    - org.gnome.gitlab.somas.Apostrophe
-    - se.sjoerd.Graphs
-    - org.torproject.torbrowser-launcher
+    - com.belmoussaoui.Obfuscate # Obfuscation tool
+    - com.github.alexhuntley.Plots # Data plotting application
+    - com.github.tenderowl.frog # Note-taking app
+    - io.github.alainm23.planify # Task management application
+    - info.febvre.Komikku # Manga reader
+    - io.github.amit9838.mousam # Weather application
+    - io.github.mpobaschnig.Vaults # Encryption tool
+    - io.github.vikdevelop.SaveDesktop # Desktop session saving tool
+    - org.bleachbit.BleachBit # System cleaner
+    - org.gnome.gitlab.YaLTeR.Identity # Identity management tool
+    - org.gnome.gitlab.somas.Apostrophe # Markdown editor
+    - se.sjoerd.Graphs # Graphing calculator
+    - org.torproject.torbrowser-launcher # Tor Browser launcher
+    - io.github.nozwock.Packet # Android quickshare

@@ -5,6 +5,7 @@ WORKDIR /usr/local/bin
 # prevent apt from asking for input
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Install Deps
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y software-properties-common curl git build-essential ca-certificates && \
@@ -16,9 +17,22 @@ RUN apt-get update && \
     apt-get autoremove --yes && \
 	ansible-galaxy collection install community.general
 
-# TODO: check user and permission stuff between docker and ansible
-
+# second stage
 FROM base
+
+# Create non-root user
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup
+
+# Change ownership to non-root user
+RUN chown appuser:appgroup server
+
+# Switch to non-root user
+USER appuser
+
 COPY . .
+
+# Validate playbook
 RUN ansible-playbook ./playbook.yaml --check
+
 CMD [""]
