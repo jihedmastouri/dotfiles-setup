@@ -10,28 +10,30 @@ common_packages:
   - btop
 
 goversion: 1.24.6
+nodeversion: 20.17.0
+rustversion: 1.80.0
 
 more_tools:
   - "curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir ~/.local/bin"
   - "curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh"
 
 go_install:
-  - github.com/jesseduffield/lazydocker@latest
-  - github.com/jesseduffield/lazygit@latest
-  - github.com/go-delve/delve/cmd/dlv@latest
-  - honnef.co/go/tools/cmd/staticcheck@latest
+  - github.com/jesseduffield/lazydocker@v0.23.3
+  - github.com/jesseduffield/lazygit@v0.42.0
+  - github.com/go-delve/delve/cmd/dlv@v1.22.1
+  - honnef.co/go/tools/cmd/staticcheck@v0.4.7
   # personal:
-  - github.com/direnv/direnv@latest
-  - github.com/charmbracelet/glow@latest
-  - github.com/danielgatis/imgcat@latest
-  - github.com/charmbracelet/vhs@latest
+  - github.com/direnv/direnv@v2.34.0
+  - github.com/charmbracelet/glow@v1.5.1
+  - github.com/danielgatis/imgcat@v1.0.0
+  - github.com/charmbracelet/vhs@v0.7.1
   # optional:
-  - github.com/charmbracelet/gum@latest
-  - github.com/kubernetes/kompose@latest
-  - github.com/derailed/k9s@latest
-  - github.com/rakyll/hey@latest
+  - github.com/charmbracelet/gum@v0.14.3
+  - github.com/kubernetes/kompose@v1.33.0
+  - github.com/derailed/k9s@v0.32.4
+  - github.com/rakyll/hey@v0.1.4
 
 cargo_install:
-  - eza
+  - eza@0.18.17
 
 uv_install: []

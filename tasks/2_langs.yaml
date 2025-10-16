@@ -13,16 +13,25 @@
         executable: /bin/bash
       environment:
         PATH: "{{ ansible_env.PATH }}:/usr/bin"
+
+    - name: Install Node.js with fnm
+      shell: |
+        export PATH="{{ ansible_env.HOME }}/.local/share/fnm:$PATH"
+        fnm install {{ nodeversion }}
+        fnm use {{ nodeversion }}
+        fnm default {{ nodeversion }}
+      args:
+        executable: /bin/bash
+      environment:
+        PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/share/fnm"
   tags:
     - install
-    - langs
     - dev
 
 - name: Install Go
-  become: true
+  become: true # Required for /usr/local installation
   tags:
     - install
-    - langs
     - dev
   block:
     - name: Remove existing Go installation
@@ -34,7 +43,20 @@
       ansible.builtin.get_url:
         url: "https://go.dev/dl/go{{ goversion }}.linux-amd64.tar.gz"
         dest: "/tmp/go{{ goversion }}.linux-amd64.tar.gz"
-        mode: '0644'
+        mode: "0644"
+
+    - name: Download Go checksum
+      ansible.builtin.get_url:
+        url: "https://go.dev/dl/go{{ goversion }}.linux-amd64.tar.gz.sha256"
+        dest: "/tmp/go{{ goversion }}.linux-amd64.tar.gz.sha256"
+        mode: "0644"
+
+    - name: Verify Go checksum
+      ansible.builtin.shell: |
+        cd /tmp
+        sha256sum -c go{{ goversion }}.linux-amd64.tar.gz.sha256
+      args:
+        executable: /bin/bash
 
     - name: Extract Go archive
       ansible.builtin.unarchive:
@@ -45,7 +67,6 @@
 - name: Install Rust
   tags:
     - install
-    - langs
     - dev
   block:
     - name: Check if Rust is already installed
@@ -56,7 +77,7 @@
 
     - name: Download and install Rust using rustup
       shell: |
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain {{ rustversion }} -y
       args:
         creates: "{{ ansible_env.HOME }}/.cargo/bin/rustc"
         executable: /bin/bash
@@ -76,11 +97,10 @@
       shell: |
         curl -LsSf https://astral.sh/uv/install.sh | sh
       args:
-        creates: "{{ ansible_env.HOME }}/.cargo/bin/uv"  # Or wherever uv gets installed
+        creates: "{{ ansible_env.HOME }}/.cargo/bin/uv" # Or wherever uv gets installed
         executable: /bin/bash
       environment:
         PATH: "{{ ansible_env.PATH }}"
   tags:
     - install
-    - langs
     - dev

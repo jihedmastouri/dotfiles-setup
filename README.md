@@ -5,9 +5,9 @@
 Using `ansible` and `docker` to spin up my linux work environment.
 
 Ansible tags:
-- `dev`: work related stuf that works in the terminal
-- `flatpak`: GUI apps using flatpak
-- `gui`: other linux GUI apps.
+- `core`: essential system packages and tools
+- `dev`: development languages and tools
+- `personal`: personal apps, dotfiles, and configurations
 
 > check out my dotfiles' [repo](https://github.com/jihedmastouri/dotfiles) (aka configs).
 

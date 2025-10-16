@@ -50,5 +50,5 @@ run:
 		-v $(shell pwd):/ansible \
 		-e TAGS="$(TAGS)" \
 		ansible-docker \
-		ansible-playbook ${TAGS:+--tags $(TAGS)} -i ./invenotry.ini ./playbook.yaml -K
+		ansible-playbook ${TAGS:+--tags $(TAGS)} -i ./inventory.ini ./playbook.yaml -K
 

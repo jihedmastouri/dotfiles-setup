@@ -1,11 +1,13 @@
 - name: Install Google Chrome
-  become: true
+  become: true # Required for system package installation and repository setup
+  tags:
+    - personal
   block:
     - name: Add Google Chrome signing key (Ubuntu)
       ansible.builtin.get_url:
         url: https://dl.google.com/linux/linux_signing_key.pub
         dest: /etc/apt/keyrings/google-chrome.gpg
-        mode: '0644'
+        mode: "0644"
         force: true
       when: ansible_distribution == 'Ubuntu'
 
@@ -27,7 +29,15 @@
       ansible.builtin.get_url:
         url: https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
         dest: /tmp/google-chrome-stable_current_x86_64.rpm
-        mode: '0644'
+        mode: "0644"
+      when: ansible_distribution == 'Fedora'
+
+    - name: Verify Chrome RPM checksum (Fedora)
+      ansible.builtin.shell: |
+        cd /tmp
+        rpm -K google-chrome-stable_current_x86_64.rpm
+      args:
+        executable: /bin/bash
       when: ansible_distribution == 'Fedora'
 
     - name: Install Google Chrome RPM which also adds repo (Fedora)
@@ -39,13 +49,15 @@
       notify: Clean up Chrome RPM # Add a handler later if needed
 
 - name: Install Visual Studio Code
-  become: true
+  tags:
+    - personal
+  become: true # Required for system package installation and repository setup
   block:
     - name: Add Microsoft GPG key (Ubuntu)
       ansible.builtin.get_url:
         url: https://packages.microsoft.com/keys/microsoft.asc
         dest: /etc/apt/keyrings/packages.microsoft.gpg
-        mode: '0644'
+        mode: "0644"
         force: true
       when: ansible_distribution == 'Ubuntu'
 
@@ -86,7 +98,9 @@
       when: ansible_distribution == 'Fedora'
 
 - name: Install Ghostty
-  become: true
+  become: true # Required for system package installation and repository setup
+  tags:
+    - personal
   block:
     - name: Install Ghostty via Snap (Ubuntu)
       community.general.snap:

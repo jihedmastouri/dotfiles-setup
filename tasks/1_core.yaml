@@ -1,5 +1,5 @@
 - name: Install Common Packages
-  become: true
+  become: true # Required for system package installation
   package:
     name: "{{ item }}"
     state: present
@@ -7,11 +7,9 @@
   tags:
     - install
     - core
-    - common
-    - dev
 
 - name: Install OS specific Packages
-  become: true
+  become: true # Required for system package installation
   package:
     name: "{{ item }}"
     state: present
@@ -19,11 +17,9 @@
   tags:
     - install
     - core
-    - specific
-    - dev
 
 - name: Install Tools
-  become: true
+  become: true # Required for system package installation
   package:
     name: "{{ item }}"
     state: present
@@ -31,8 +27,6 @@
   tags:
     - install
     - core
-    - tools
-    - dev
 
 - name: Config Aliases
   ansible.builtin.file:
@@ -43,10 +37,11 @@
   tags:
     - config
     - core
-    - alias
-    - dev
 
 - name: Install Neovim
+  tags:
+    - install
+    - dev
   block:
     - name: Add Neovim PPA on Ubuntu
       apt_repository:
@@ -54,7 +49,7 @@
       when: ansible_distribution == 'Ubuntu'
 
     - name: Install Neovim and dependencies on Ubuntu
-      become: true
+      become: true # Required for system package installation
       package:
         name: "{{ item }}"
         state: present
@@ -68,7 +63,7 @@
       when: ansible_distribution == 'Ubuntu'
 
     - name: Install Neovim on Fedora
-      become: true
+      become: true # Required for system package installation
       package:
         name: "{{ item }}"
         state: present

@@ -1,6 +1,6 @@
-- name: Install external tools
+- name: Install external tools via shell scripts
   block:
-    - name: Install via curl
+    - name: Install tools via curl scripts
       ansible.builtin.shell: "{{ item }}"
       args:
         executable: /bin/bash
@@ -8,9 +8,11 @@
         PATH: "{{ ansible_env.PATH }}"
       loop: "{{ more_tools }}"
       when: more_tools is defined
-      tags: [install, core, external, dev]
+      tags:
+        - install
+        - dev
 
-    - name: Install with Go
+    - name: Install Go-based tools
       ansible.builtin.shell: "{{ ansible_env.HOME }}/go/bin/go install {{ item }}@latest"
       args:
         executable: /bin/bash
@@ -18,43 +20,51 @@
         PATH: "{{ ansible_env.PATH }}"
         GOPATH: "{{ ansible_env.HOME }}/go"
       loop: "{{ go_install }}"
-      ignore_errors: true
       when: go_install is defined
       register: go_install_results
       changed_when: go_install_results.rc == 0
-      tags: [install, core, external, dev]
+      failed_when: go_install_results.rc != 0
+      tags:
+        - install
+        - dev
 
-    - name: Install via cargo
+    - name: Install Rust-based tools via Cargo
       ansible.builtin.shell: "cargo install {{ item }}"
       args:
         executable: /bin/bash
       environment:
         PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.cargo/bin"
       loop: "{{ cargo_install }}"
-      ignore_errors: true
       when: cargo_install is defined
       register: cargo_install_results
       changed_when: cargo_install_results.rc == 0
-      tags: [install, core, external, dev]
+      failed_when: cargo_install_results.rc != 0
+      tags:
+        - install
+        - dev
 
-    - name: Install with uvx
+    - name: Install Python tools via uv
       ansible.builtin.shell: "uv tool install {{ item }}"
       args:
         executable: /bin/bash
       environment:
         PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
       loop: "{{ uv_install }}"
-      ignore_errors: true
       when: uv_install is defined
       register: uv_install_results
       changed_when: uv_install_results.rc == 0
-      tags: [install, core, external, dev]
+      failed_when: uv_install_results.rc != 0
+      tags:
+        - install
+        - dev
 
-    - name: Verify installations
+    - name: Installation summary
       ansible.builtin.debug:
-        msg: "Failed to install some tools (this might be normal if versions were already installed)"
+        msg: "Tool installations completed successfully"
       when: >
-        (go_install_results is defined and go_install_results.failed) or
-        (cargo_install_results is defined and cargo_install_results.failed) or
-        (uv_install_results is defined and uv_install_results.failed)
-      tags: [install, core, external, dev]
+        (go_install_results is defined and not go_install_results.failed) or
+        (cargo_install_results is defined and not cargo_install_results.failed) or
+        (uv_install_results is defined and not uv_install_results.failed)
+      tags:
+        - install
+        - dev

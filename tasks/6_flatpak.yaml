@@ -1,38 +1,37 @@
-- name: flatpak present
-  become: true
+- name: Install Flatpak package manager
+  become: true # Required for system package installation
   package:
     name: flatpak
     state: present
   tags:
-    - install
     - flatpak
+    - install
 
-- name: Add the flathub flatpak repository remote to the user installation
+- name: Configure Flathub repository for Flatpak
   community.general.flatpak_remote:
     name: flathub
     state: present
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     method: user
   tags:
-    - config
     - flatpak
+    - install
 
 - name: Include flatpak variables
   include_vars:
     file: ../vars/flatpak.yaml
   tags:
     - install
-    - config
     - flatpak
 
-- name: Install Flatpaks by category
+- name: Install Flatpak applications
   community.general.flatpak:
     name: "{{ item.value }}"
     state: present
     method: system
   loop: "{{ flatpaks | dict2items }}"
   loop_control:
-    label: "{{ item.key }}" # Optional: Makes the output cleaner, showing the category name
+    label: "{{ item.key }}" # Shows category name for better progress tracking
   tags:
     - install
     - flatpak

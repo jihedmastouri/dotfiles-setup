@@ -8,11 +8,10 @@
 
     - name: Change shell to ZSH
       shell: chsh -s $(which zsh)
+      become: true
   tags:
     - install
-    - config
     - core
-    - dev
 
 - name: Download and configure Dotfiles
   block:
@@ -31,10 +30,6 @@
       ansible.builtin.shell: |
         cd "{{ ansible_env.HOME }}/.dotfiles"
         chmod +x ./stow.sh && ./stow.sh -a
-
   tags:
-    - install
     - config
     - core
-    - dev
-
