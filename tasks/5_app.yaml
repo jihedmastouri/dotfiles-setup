@@ -1,7 +1,8 @@
 - name: Install Google Chrome
   become: true # Required for system package installation and repository setup
   tags:
-    - personal
+    - gui
+    - install
   block:
     - name: Add Google Chrome signing key (Ubuntu)
       ansible.builtin.get_url:
@@ -100,7 +101,8 @@
 - name: Install Ghostty
   become: true # Required for system package installation and repository setup
   tags:
-    - personal
+    - gui
+    - install
   block:
     - name: Install Ghostty via Snap (Ubuntu)
       community.general.snap:
